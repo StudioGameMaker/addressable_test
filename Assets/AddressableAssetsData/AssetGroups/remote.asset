@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: remote
+  m_EditorClassIdentifier: 
+  m_GroupName: remote
+  m_Data:
+    m_SerializedData: []
+  m_GUID: f47bc74bde7c941428a34370042196bd
+  m_SerializeEntries:
+  - m_GUID: 7c8bef2eb10bcae4eba4a47b1804d926
+    m_Address: remote/atlas_shop
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - remote
+  - m_GUID: 72710cb7b8bf5094d955cbb686b47124
+    m_Address: remote/test_object
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - remote
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: e11468c6f5e19bf4895f52cae50bd962, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d6061f8b89fe9fe4f9ae7d8eed043fc1, type: 2}
+    - {fileID: 11400000, guid: a449d503c62e64a43b628c4d39d10612, type: 2}

@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: atlas_shop
+  serializedVersion: 2
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 47
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 68b505aef89c35f4b8050e7a8f00dc19, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 829d5623aeaad4c03bcc68357b0ce1f4, type: 3}
+  - {fileID: 21300000, guid: 63014ab38303c4f1c88e6bb7d3e3dba3, type: 3}
+  - {fileID: 21300000, guid: beb6c6e37fc2543d3bd97cecca659e7f, type: 3}
+  - {fileID: 21300000, guid: 31524644084684e488ec0f4768b22c5d, type: 3}
+  - {fileID: 21300000, guid: 1cf34984f99c2462ab5202f25b885c08, type: 3}
+  - {fileID: 21300000, guid: d8dbc4356c8ed4654a3419a982d8eb4c, type: 3}
+  - {fileID: 21300000, guid: d60a63c596983407e8f97d6df6b5d8a1, type: 3}
+  - {fileID: 21300000, guid: 071465568172e41ed891950db8126b8e, type: 3}
+  - {fileID: 21300000, guid: 5bb740a680e564128b6cf2e969d2c2ec, type: 3}
+  - {fileID: 21300000, guid: 046da14783d0e445bb78c5ed7abf2178, type: 3}
+  - {fileID: 21300000, guid: fc413d38feecb466e941df7620443003, type: 3}
+  - {fileID: 21300000, guid: a4f7bc488d91f4b61a4b51d8e9ee9ee1, type: 3}
+  - {fileID: 21300000, guid: b61aae48150384005b3f67886ac39a11, type: 3}
+  - {fileID: 21300000, guid: 8e2b60e835ce94047a9b9f7bfe6ab56d, type: 3}
+  - {fileID: 21300000, guid: cf5bf62960daa42b683c175f912eb9c6, type: 3}
+  - {fileID: 21300000, guid: 3f225739376c6448ea4ab38fdac4afd1, type: 3}
+  - {fileID: 21300000, guid: 418156d9e3ee54dc0a31caff7754e081, type: 3}
+  - {fileID: 21300000, guid: 5931cc8a7609c4cf69b115b68676cc1b, type: 3}
+  - {fileID: 21300000, guid: 4f4d2b1b153fb47eda97f2f2a682f0a5, type: 3}
+  - {fileID: 21300000, guid: c2192c1b5c9a84c4fbbc6feb1d6747e9, type: 3}
+  - {fileID: 21300000, guid: 53348d3bba9db405cae09f66df3c8dfd, type: 3}
+  - {fileID: 21300000, guid: 02da27dc86c4a4f9e86db5210eb1a5d2, type: 3}
+  - {fileID: 21300000, guid: a8f181bd7d20343fe956a7bb81e271ff, type: 3}
+  - {fileID: 21300000, guid: 79d545bd22df44f249100c7a2882714b, type: 3}
+  - {fileID: 21300000, guid: fc1a771e6ef3d4a6ab0efdefecdd22a9, type: 3}
+  - {fileID: 21300000, guid: 4380403e86ebd419db386cf75d302628, type: 3}
+  - {fileID: 21300000, guid: fb69eeaee771e428ea5bd108e2d095f0, type: 3}
+  - {fileID: 21300000, guid: 2ddaa25f61e5747d5ae2c1ab8bacc180, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - ic_shop_more
+  - img_shop_super
+  - img_shop_coin1
+  - img_shop_coin5
+  - img_settlement_titlebg
+  - img_shop_failure
+  - img_shop_winner
+  - img_shop_coin2
+  - img_text_shop
+  - img_shop_bg
+  - img_shop_coin4
+  - img_shop_grand
+  - img_shop_salemore
+  - img_shop_ad
+  - img_text_successful
+  - img_shop_popular
+  - img_shop_fun
+  - img_shop_coin6
+  - img_shop_value
+  - img_shop_big
+  - img_text_failure
+  - img_text_ok
+  - img_shop_starter
+  - img_tresure_reward
+  - img_shop_coin3
+  - img_shop_coin0
+  - img_shop_sale
+  - img_text_reward
+  m_RenderDataMap: {}
+  m_Tag: atlas_shop
+  m_IsVariant: 0
+  m_IsPlaceholder: 0
