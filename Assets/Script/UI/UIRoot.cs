@@ -57,7 +57,7 @@ namespace Game
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T LoadView<T>(string address ) where T : Component
+        public T OpenView<T>(string address ) where T : Component
         {
             var ui = Res.GetInstance<T>(address, _root);
             if (ui != null)

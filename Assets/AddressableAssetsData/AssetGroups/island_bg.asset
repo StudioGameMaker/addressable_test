@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: island_bg
   m_Data:
     m_SerializedData: []
-  m_GUID: 6299de096032c457083ccefbd89e5119
+  m_GUID: 0034c24a48e4e08409b77b51eecc1a1f
   m_SerializeEntries:
   - m_GUID: 4d6cf11b4d46cac4e9dfa3a6f9601636
     m_Address: island_bg/img_map_island_1
