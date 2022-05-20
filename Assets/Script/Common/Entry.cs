@@ -37,6 +37,6 @@ public class Entry : MonoBehaviour
         UI.ShowLoading(false);
         Debug.Log($"<color=#88ff00>===== 预加载结束 =====</color>");
         // 显示主界面
-        var gameView = UI.OpenView<GameView>(Const.ADDRESS_GAME_VIEW);
+        var gameView = UI.LoadView<GameView>(Const.ADDRESS_GAME_VIEW);
     }
 }
