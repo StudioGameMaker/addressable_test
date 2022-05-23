@@ -114,7 +114,7 @@ namespace Game
         /// </summary>
         private void SetIslandBG()
         {
-            var address = "island_bg/img_map_island_1";
+            var address = "island_bg/bg";
             var sp = ResMgr.Instance.LoadSprite(address);
             if (sp != null)
             {
