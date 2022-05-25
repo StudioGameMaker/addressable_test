@@ -18,12 +18,12 @@ MonoBehaviour:
   m_GUID: 0034c24a48e4e08409b77b51eecc1a1f
   m_SerializeEntries:
   - m_GUID: 4d6cf11b4d46cac4e9dfa3a6f9601636
-    m_Address: island_bg/bg
+    m_Address: island_bg/bg1
     m_ReadOnly: 0
     m_SerializedLabels:
     - island_bg
   - m_GUID: 3014528022d3ad342a18254b1fe2b1e7
-    m_Address: island_bg/bg2
+    m_Address: island_bg/bg
     m_ReadOnly: 0
     m_SerializedLabels:
     - island_bg

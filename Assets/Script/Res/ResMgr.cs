@@ -12,6 +12,12 @@ using Object = UnityEngine.Object;
 
 namespace Game
 {
+    
+    /// <summary>
+    /// 资源管理器
+    /// 相关文档查询：
+    /// 官方： https://docs.unity3d.com/Packages/com.unity.addressables@1.18/manual/RemoteContentDistribution.html
+    /// </summary>
     public class ResMgr : MonoBehaviour
     {
 
@@ -75,8 +81,7 @@ namespace Game
                 if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
                     Debug.Log("star-----> 加载资源 = group = " + key);
-                    var map = new ResMap(key, handle.Result);
-                    _cachedMaps[key] = map;
+                    Add(key, handle);
                 }
                 else
                 {
@@ -100,10 +105,9 @@ namespace Game
         {
             Addressables.LoadAssetsAsync<Object>(key, null).Completed += handle =>
             {
-                if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result is IList<Object> list)
+                if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result is IList<Object>)
                 {
-                    var map = new ResMap(key, list);
-                    _cachedMaps[key] = map;
+                    Add(key, handle);
                     callback?.Invoke(true);
                 }
                 else
@@ -122,6 +126,26 @@ namespace Game
         public bool MapExists(string name)
         {
             return _cachedMaps.ContainsKey(name);
+        }
+
+        public void Remove(string name)
+        {
+            if (_cachedMaps.TryGetValue(name, out var map))
+            {
+                _cachedMaps.Remove(name);
+                map.Dispose();
+            }
+        }
+        
+        /// <summary>
+        /// 添加资源库
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="handle"></param>
+        public void Add(string name, AsyncOperationHandle<IList<Object>> handle)
+        {
+            if(MapExists(name)) Remove(name);
+            _cachedMaps[name] = new ResMap(name, handle);
         }
 
 
@@ -275,7 +299,7 @@ namespace Game
                 if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
                     size = (int)handle.Result;
-                    loaded = size > 0;
+                    loaded = size == 0;
                 }
                 callback?.Invoke(loaded, size);  // 获取size失败
             };
@@ -288,10 +312,18 @@ namespace Game
         /// <param name="callback"></param>
         public void PreloadGroupAsync(string groupName, Action<bool> callback)
         {
-            Addressables.DownloadDependenciesAsync(groupName, Addressables.MergeMode.None, true).Completed +=
+            Addressables.DownloadDependenciesAsync(groupName).Completed +=
                 handle =>
                 {
-                    var success = handle.Status == AsyncOperationStatus.Succeeded;
+                    var success = false;
+                    if (handle.Status == AsyncOperationStatus.Succeeded)
+                    {
+                        success = true;
+                    }
+                    else
+                    {
+                        Debug.Log($"---- Load Group Fail: {handle.Status}");
+                    }
                     callback?.Invoke(success);
                 };
         }
@@ -305,7 +337,7 @@ namespace Game
         /// <returns></returns>
         public IEnumerator PreloadGroup(string groupName, Action<bool> complete, Action<float> loading)
         {
-            var handle = Addressables.DownloadDependenciesAsync(groupName, Addressables.MergeMode.None, true);
+            var handle = Addressables.DownloadDependenciesAsync(groupName);
             while (!handle.IsDone)
             {
                 loading?.Invoke(handle.PercentComplete);
@@ -315,6 +347,46 @@ namespace Game
             complete?.Invoke(success);
         }
 
+
+        /// <summary>
+        /// 检查更新Catalog
+        /// </summary>
+        /// <param name="callback"></param>
+        public async void CheckCatalogUpdate(Action complete = null, Action<string> loading = null)
+        {
+            await Addressables.InitializeAsync().Task;
+            var handle = Addressables.CheckForCatalogUpdates(false);
+            await handle.Task;
+            
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                if (handle.Result.Any())
+                {
+                    List<string> catalogs = handle.Result;
+                    if (catalogs != null && catalogs.Count > 0)
+                    {
+                        foreach (var catalog in catalogs)
+                        {
+                            Debug.Log("catalog  " + catalog);
+                        }
+                        Debug.Log("download catalog start ");
+                        var updateHandle = Addressables.UpdateCatalogs(catalogs, false);
+                        await updateHandle.Task;
+                        foreach (var item in updateHandle.Result)
+                        {
+                            string msg = "catalog result: " + item.LocatorId;
+                            Debug.Log(msg);
+                            loading?.Invoke(msg);
+                        }
+                        Debug.Log("download catalog finish " + updateHandle.Status);
+                    }
+                }
+            }
+            complete?.Invoke();
+            Addressables.Release(handle);
+        }
+        
+        
 
 
         #endregion
@@ -339,9 +411,11 @@ namespace Game
     {
         public string name;
         public List<Object> objects;
+        public AsyncOperationHandle<IList<Object>> handle;
 
-        public ResMap(string key, IList<Object> raw = null)
+        public ResMap(string key, AsyncOperationHandle<IList<Object>> handle)
         {
+            var raw = handle.Result;
             name = key;
             if (null != raw)
             {
@@ -362,6 +436,14 @@ namespace Game
         public T Find<T>(string name)where T: Object
         {
             return (T) objects.Find(c => c.name == name && (T) c != null);
+        }
+
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        public void Dispose()
+        {
+            Addressables.Release(handle);
         }
     }
 
