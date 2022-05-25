@@ -16,16 +16,32 @@ namespace Game
         [SerializeField] private Button _btnLoad1;
         [SerializeField] private Button _btnLoad2;
         [SerializeField] private Button _btnLoad3;
+        [SerializeField] private Button _btnLoadPack1;
+        [SerializeField] private Button _btnLoadPack2;
         [SerializeField] private Image _islandBG;
 
+        public const string K_GROUP_ISLAND_BG = "island_bg";
+        
+        private ResMgr Res = ResMgr.Instance;
+        
+        
+        
+        
         private void Awake()
         {
             _islandBG.gameObject.SetActive(false);
             _btnLoad1.onClick.AddListener(LoadObject1);
             _btnLoad2.onClick.AddListener(LoadObject2);
             _btnLoad3.onClick.AddListener(LoadObject3);
-            
+            _btnLoadPack1.onClick.AddListener(OnClickPack1);
+            _btnLoadPack2.onClick.AddListener(OnClickPack2);
+
             Debug.Log("-------------- GameView Awake ---------------");
+
+            Res.CheckGroupIsDownloaded(K_GROUP_ISLAND_BG, (loaded, size) =>
+            {
+                _btnLoad3.gameObject.SetActive(loaded);
+            });
         }
         
         /// <summary>
@@ -35,13 +51,14 @@ namespace Game
         /// <param name="callback"></param>
         private void LoadGroup(string key, Action callback)
         {
-            if (ResMgr.Instance.MapExists(key))
+            if (Res.MapExists(key))
             {
                 callback?.Invoke(); 
             }
             else
             {
-                ResMgr.Instance.LoadGroupAsync(key, success =>
+                // 直接加载组内资源, 并缓存
+                Res.LoadGroupAssetsAsync(key, success =>
                 {
                     if (success)
                     {
@@ -73,7 +90,7 @@ namespace Game
 
         private void SetIconSprite()
         {
-            var sp = ResMgr.Instance.LoadSpriteFromAtlas("remote/atlas_shop", "ic_shop_more");
+            var sp =Res.LoadSpriteFromAtlas("remote/atlas_shop", "ic_shop_more");
             if (sp != null)
             {
                 _image.sprite = sp;
@@ -93,7 +110,7 @@ namespace Game
         /// </summary>
         private void LoadTestObject()
         {
-            var obj = ResMgr.Instance.GetInstance<TestObject>("remote/test_object", transform);
+            var obj = Res.GetInstance<TestObject>("remote/test_object", transform);
             if (obj == null)
             {
                 Debug.LogError("--- 加载 TestObject 失败");
@@ -106,7 +123,7 @@ namespace Game
         private void LoadObject3()
         {
             Debug.Log($"---- LoadObject3 ----");
-            LoadGroup("island_bg", SetIslandBG);
+            LoadGroup(K_GROUP_ISLAND_BG, SetIslandBG);
         }
         
         /// <summary>
@@ -115,7 +132,7 @@ namespace Game
         private void SetIslandBG()
         {
             var address = "island_bg/bg";
-            var sp = ResMgr.Instance.LoadSprite(address);
+            var sp = Res.LoadSprite(address);
             if (sp != null)
             {
                 _islandBG.gameObject.SetActive(true);
@@ -126,5 +143,48 @@ namespace Game
             }
         }
 
+        /// <summary>
+        /// 点击Pack1 按钮
+        /// </summary>
+        private void OnClickPack1()
+        {
+            // 检查资源组是否已经下载
+            Res.CheckGroupIsDownloaded(K_GROUP_ISLAND_BG, (loaded, size) =>
+            {
+                if (loaded)
+                {
+                    _btnLoad3.gameObject.SetActive(true);
+                }
+                else
+                {
+                    
+                }
+            });
+        }
+
+
+
+
+
+        private void OnClickPack2()
+        {
+            
+        }
+
+
+
+        #region 检查Group是否已经下载完成
+
+        private void CheckGroupIsLoaded(bool loaded, int size)
+        {
+            
+        }
+        
+        
+
+        #endregion
+        
+        
+        
     }
 }

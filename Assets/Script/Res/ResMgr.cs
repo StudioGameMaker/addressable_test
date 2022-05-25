@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Data;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -93,11 +92,11 @@ namespace Game
 
 
         /// <summary>
-        /// 异步加载Group
+        /// 异步加载Group组内资源
         /// </summary>
         /// <param name="key"></param>
         /// <param name="callback"></param>
-        public void LoadGroupAsync(string key, Action<bool> callback)
+        public void LoadGroupAssetsAsync(string key, Action<bool> callback)
         {
             Addressables.LoadAssetsAsync<Object>(key, null).Completed += handle =>
             {
@@ -116,7 +115,7 @@ namespace Game
         }
 
         /// <summary>
-        /// 组是否存在
+        /// 本地组是否存在
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -227,7 +226,12 @@ namespace Game
 
             return null;
         }
-
+        
+        /// <summary>
+        /// 加载材质
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
         public Texture2D LoadTexture2D(string address)
         {
             return LocalLoad<Texture2D>(address);
@@ -239,7 +243,11 @@ namespace Game
             return LocalLoad<GameObject>(address);
         }
 
-
+        /// <summary>
+        /// 加载Sprite
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
         public Sprite LoadSprite(string address)
         {
             var tx = LoadTexture2D(address);
@@ -248,6 +256,63 @@ namespace Game
                 return Sprite.Create(tx, new Rect(0, 0, tx.width, tx.height), Vector2.zero);
             }
             return null;
+        }
+
+
+        /// <summary>
+        /// 查找Group是否已经下载完毕
+        /// 如果下载完毕, 回调返回 true, size = 0
+        /// 如果未下载, 回调返回false , size = downloadsize
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <param name="callback"></param>
+        public void CheckGroupIsDownloaded(string groupName, Action<bool, int> callback)
+        {
+            Addressables.GetDownloadSizeAsync(groupName).Completed += handle =>
+            {
+                bool loaded = false;
+                int size = -1;
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    size = (int)handle.Result;
+                    loaded = size > 0;
+                }
+                callback?.Invoke(loaded, size);  // 获取size失败
+            };
+        }
+
+        /// <summary>
+        /// 预加载Group
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <param name="callback"></param>
+        public void PreloadGroupAsync(string groupName, Action<bool> callback)
+        {
+            Addressables.DownloadDependenciesAsync(groupName, Addressables.MergeMode.None, true).Completed +=
+                handle =>
+                {
+                    var success = handle.Status == AsyncOperationStatus.Succeeded;
+                    callback?.Invoke(success);
+                };
+        }
+        
+        /// <summary>
+        /// 协程下载资源组
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <param name="complete"></param>
+        /// <param name="loading"></param>
+        /// <returns></returns>
+        public IEnumerator PreloadGroup(string groupName, Action<bool> complete, Action<float> loading)
+        {
+            var handle = Addressables.DownloadDependenciesAsync(groupName, Addressables.MergeMode.None, true);
+            while (!handle.IsDone)
+            {
+                loading?.Invoke(handle.PercentComplete);
+                yield return null;
+            }
+            var success = handle.Status == AsyncOperationStatus.Succeeded;
+            complete?.Invoke(success);
         }
 
 
